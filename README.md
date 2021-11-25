@@ -94,3 +94,7 @@ material-kit-react
 
 - Email Us: support@deviasio.zendesk.com
 - [Follow us on Instagram](https://www.instagram.com/deviasio/)
+
+## Running on Docker
+Create image: docker build -t todo-app:latest .
+Run container: docker run -p 3000:3000 -d todo-app:latest
