@@ -1,15 +1,16 @@
 import Head from 'next/head';
 import { Box, Container } from '@mui/material';
-import { CustomerListResults } from '../components/customer/customer-list-results';
-import { CustomerListToolbar } from '../components/customer/customer-list-toolbar';
+import { ListaTarefasResults } from '../components/customer/tarefa-list-results';
+import { TarefaListToolbar } from '../components/customer/tarefa-list-toolbar';
 import { DashboardLayout } from '../components/dashboard-layout';
-import { customers } from '../__mocks__/customers';
 
-const Customers = () => (
+const tarefas = [];
+
+const Tarefas = () => (
   <>
     <Head>
       <title>
-        Customers | Material Kit
+        Tarefas
       </title>
     </Head>
     <Box
@@ -20,18 +21,18 @@ const Customers = () => (
       }}
     >
       <Container maxWidth={false}>
-        <CustomerListToolbar />
+        <TarefaListToolbar />
         <Box sx={{ mt: 3 }}>
-          <CustomerListResults customers={customers} />
+          <ListaTarefasResults tarefas={tarefas} />
         </Box>
       </Container>
     </Box>
   </>
 );
-Customers.getLayout = (page) => (
+Tarefas.getLayout = (page) => (
   <DashboardLayout>
     {page}
   </DashboardLayout>
 );
 
-export default Customers;
+export default Tarefas;
