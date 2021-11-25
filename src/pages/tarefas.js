@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { Box, Container } from '@mui/material';
-import { ListaTarefasResults } from '../components/customer/tarefa-list-results';
-import { TarefaListToolbar } from '../components/customer/tarefa-list-toolbar';
+import { ListaTarefasResults } from '../components/tarefa/tarefa-list-results';
+import { TarefaListToolbar } from '../components/tarefa/tarefa-list-toolbar';
 import { DashboardLayout } from '../components/dashboard-layout';
 
 const tarefas = [];

@@ -5,11 +5,13 @@ import {
   CardContent,
   TextField,
   InputAdornment,
-  SvgIcon, Typography
+  SvgIcon,
+  Typography
 } from '@mui/material';
 import { Search as SearchIcon } from '../../icons/search';
 import { Upload as UploadIcon } from '../../icons/upload';
 import { Download as DownloadIcon } from '../../icons/download';
+import FormDialog from '../../components/dialog/form-dialog';
 
 export const TarefaListToolbar = (props) => (
   <Box {...props}>
@@ -41,13 +43,10 @@ export const TarefaListToolbar = (props) => (
         >
           Exportar
         </Button>
-        <Button
-          color="primary"
-          variant="contained"
-        >
-          Add Tarefa
-        </Button>
+        <FormDialog />
+
       </Box>
+
     </Box>
     <Box sx={{ mt: 3 }}>
       <Card>
