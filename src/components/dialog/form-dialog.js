@@ -5,19 +5,34 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Box
+
+ } from "@mui/material";
 
 export default function FormDialog(props) {
   const { open, setOpen, onSubmit } = props;
   const [tarefa, setTarefa] = useState("");
+  const [categoria, setCategoria] = useState("");
 
-  const modificarNome = (event) => {
+  const modificarTarefa = (event) => {
     setTarefa(event.target.value);
+  };
+
+  const modificaCategoria = (event) => {
+    setCategoria(event.target.value);
   };
 
   return (
     <div>
       <Dialog open={open}
+      maxWidth="md"
       onClose={setOpen}>
         <DialogTitle>Adicionar Tarefa</DialogTitle>
         <DialogContent>
@@ -27,27 +42,45 @@ export default function FormDialog(props) {
             margin="dense"
             id="name"
             label="Nome da tarefa"
-            type="email"
+            type="text"
             fullWidth
             variant="standard"
             value={tarefa}
-            onChange={modificarNome}
+            onChange={modificarTarefa}
           />
+          <Box pt={2}>
+          <FormControl fullWidth>
+          <Box pt={2}>
+            <InputLabel>Categoria: </InputLabel>
+            </Box>
+            <Select value={categoria}
+            onChange={e => modificaCategoria(e)}>
+              <MenuItem value={""} >Selecione....</MenuItem>
+              <MenuItem value={"Casa"}>Casa</MenuItem>
+              <MenuItem value={"Trabalho"}>Trabalho</MenuItem>
+              <MenuItem value={"Laser"}>Laser</MenuItem>
+              <MenuItem value={"Estudo"}>Estudo</MenuItem>
+              <MenuItem value={"Outros"}>Outros</MenuItem>
+            </Select>
+          </FormControl>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
               setOpen();
               setTarefa("");
+              setCategoria("");
             }}
           >
             Cancelar
           </Button>
           <Button
-            disabled={tarefa == ""}
+            disabled={tarefa == "" || categoria == ""}
             onClick={() => {
-              onSubmit(tarefa);
+              onSubmit(tarefa, categoria);
               setTarefa("");
+              setCategoria("");
             }}
           >
             Salvar

@@ -22,9 +22,9 @@ export const TarefaListToolbar = (props) => {
     setOpen(isOpened);
 };
 
-const onSubmit = (value) => {
-  if(value){
-    console.log("submit", value);
+const onSubmit = (tarefa, categoria) => {
+  if(tarefa && categoria){
+    console.log("submit", tarefa, categoria );
   }else{
     console.log("Não pode ser vazio");
   }
