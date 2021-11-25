@@ -56,11 +56,10 @@ export default function FormDialog(props) {
             <Select value={categoria}
             onChange={e => modificaCategoria(e)}>
               <MenuItem value={""} >Selecione....</MenuItem>
-              <MenuItem value={"Casa"}>Casa</MenuItem>
-              <MenuItem value={"Trabalho"}>Trabalho</MenuItem>
-              <MenuItem value={"Laser"}>Laser</MenuItem>
-              <MenuItem value={"Estudo"}>Estudo</MenuItem>
-              <MenuItem value={"Outros"}>Outros</MenuItem>
+              <MenuItem value={"PESSOAL"}>Pessoal</MenuItem>
+              <MenuItem value={"TRABALHO"}>Trabalho</MenuItem>
+              <MenuItem value={"ESTUDOS"}>Estudos</MenuItem>
+              <MenuItem value={"OUTROS"}>Outros</MenuItem>
             </Select>
           </FormControl>
           </Box>

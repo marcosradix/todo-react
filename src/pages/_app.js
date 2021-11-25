@@ -6,6 +6,7 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { theme } from '../theme';
+import axios from 'axios';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -13,6 +14,15 @@ const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   const getLayout = Component.getLayout ?? ((page) => page);
+
+  axios.interceptors.request.use((config) => {
+    config.headers['x-tenant-id'] = localStorage.getItem('userLogged');
+    config.headers['Accept'] =  "*/*";
+
+    return config;
+}, (error) => {
+    return new Promise.reject(error);
+});
 
   return (
     <CacheProvider value={emotionCache}>
