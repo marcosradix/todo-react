@@ -11,7 +11,7 @@ import {
   TableHead,
   TablePagination,
   TableRow
- 
+
 } from "@mui/material";
 
 
@@ -46,7 +46,7 @@ export const ListaTarefasResults = ({ tarefas, ...rest }) => {
               {
                 tarefas.map(tarefa => {
                   return(
-                    <TableRow key={tarefa.id}>
+                    <TableRow key={tarefa.id | ''}>
                     <TableCell>{tarefa.id}</TableCell>
                     <TableCell>{tarefa.descricao}</TableCell>
                     <TableCell>{tarefa.categoria}</TableCell>

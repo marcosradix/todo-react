@@ -21,7 +21,7 @@ import { Tarefa } from "src/model/tarefa-model";
 
 export const TarefaListToolbar = (props) => {
   const [open, setOpen] = useState(false);
-  const { refresh } = props;
+  const { refresh, filtrarTarefas } = props;
   const [state, setState] = React.useState({
     openSnack: false,
     vertical: 'top',
@@ -123,6 +123,7 @@ export const TarefaListToolbar = (props) => {
             <CardContent>
               <Box sx={{ maxWidth: 500 }}>
                 <TextField
+                  onChange={filtrarTarefas}
                   fullWidth
                   InputProps={{
                     startAdornment: (

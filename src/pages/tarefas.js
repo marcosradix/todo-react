@@ -10,7 +10,7 @@ const Tarefas = () => {
 
   const URL_API = 'https://minhastarefas-api.herokuapp.com';
   const [tarefas, setTarefas]  = useState([]);
-  
+
   const listarTarefas = () => {
     axios.get(`${URL_API}/tarefas`).then(response => {
       const listaDeTarefas = response.data;
@@ -29,6 +29,20 @@ const Tarefas = () => {
     listarTarefas();
   };
 
+  const filtrarTarefas = (event) => {
+
+    const tarefasFiltradas = tarefas.filter(function (str) {
+       return str.descricao.toLowerCase().includes(event.target.value.toLowerCase());
+      });
+
+    if(!event.target.value){
+      console.log('reset tarefas');
+      listarTarefas();
+    }
+
+    setTarefas(tarefasFiltradas);
+  };
+
 
   return (
     <>
@@ -45,7 +59,8 @@ const Tarefas = () => {
         }}
       >
         <Container maxWidth={false}>
-          <TarefaListToolbar refresh={refresh} />
+          <TarefaListToolbar refresh={refresh}
+          filtrarTarefas={filtrarTarefas} />
           <Box sx={{ mt: 3 }}>
             <ListaTarefasResults tarefas={tarefas} />
           </Box>
