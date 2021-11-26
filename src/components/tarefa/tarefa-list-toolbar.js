@@ -21,12 +21,13 @@ import { Tarefa } from "src/model/tarefa-model";
 
 export const TarefaListToolbar = (props) => {
   const [open, setOpen] = useState(false);
+  const { refresh } = props;
   const [state, setState] = React.useState({
     openSnack: false,
     vertical: 'top',
     horizontal: 'center',
   });
-
+  const URL_API = 'https://minhastarefas-api.herokuapp.com';
   const { vertical, horizontal, openSnack } = state;
 
   const handleClickSnack = (newState) => () => {
@@ -36,7 +37,6 @@ export const TarefaListToolbar = (props) => {
   const handleCloseSnack = () => {
     setState({ ...state, openSnack: false });
   };
-
 
   const handleClickOpen = () => {
     let isOpened = !open;
@@ -48,19 +48,21 @@ export const TarefaListToolbar = (props) => {
       console.log("submit", tarefa, categoria);
       salvar(new Tarefa(categoria, tarefa));
     } else {
+
       console.log("Não pode ser vazio");
     }
   };
 
   const salvar = (tarefa) => {
     axios
-      .post("https://minhastarefas-api.herokuapp.com/tarefas", tarefa)
+      .post(`${URL_API}/tarefas`, tarefa)
       .then((response) => {
         console.log(response.data);
-        {handleClickSnack({
+        handleClickSnack({
           vertical: 'top',
           horizontal: 'right',
-        })}
+        });
+        refresh();
       })
       .catch((error) => {
         console.log(error);
@@ -77,69 +79,69 @@ export const TarefaListToolbar = (props) => {
         key={vertical + horizontal}
       />
       <Box {...props}>
-      <Box
-        sx={{
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          m: -1,
-        }}
-      >
-        <Typography sx={{ m: 1 }}
-        variant="h4">
-          Tarefas
-        </Typography>
-        <Box sx={{ m: 1 }}>
-          <Button startIcon={<UploadIcon fontSize="small" />}
-           onClick={handleClickSnack({
-            vertical: 'top',
-            horizontal: 'right',
-          })}
-           sx={{ mr: 1 }}>
-            Importar
-          </Button>
-          <Button startIcon={<DownloadIcon fontSize="small" />}
-          sx={{ mr: 1 }}>
-            Exportar
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => handleClickOpen()}
-            sx={{ mr: 1 }}
-          >
-            Add Tarefa
-          </Button>
-          <FormDialog open={open}
-          onSubmit={onSubmit}
-          setOpen={handleClickOpen} />
+        <Box
+          sx={{
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            m: -1,
+          }}
+        >
+          <Typography sx={{ m: 1 }}
+            variant="h4">
+            Tarefas
+          </Typography>
+          <Box sx={{ m: 1 }}>
+            <Button startIcon={<UploadIcon fontSize="small" />}
+              onClick={handleClickSnack({
+                vertical: 'top',
+                horizontal: 'right',
+              })}
+              sx={{ mr: 1 }}>
+              Importar
+            </Button>
+            <Button startIcon={<DownloadIcon fontSize="small" />}
+              sx={{ mr: 1 }}>
+              Exportar
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => handleClickOpen()}
+              sx={{ mr: 1 }}
+            >
+              Add Tarefa
+            </Button>
+            <FormDialog open={open}
+              onSubmit={onSubmit}
+              setOpen={handleClickOpen} />
+          </Box>
+        </Box>
+        <Box sx={{ mt: 3 }}>
+          <Card>
+            <CardContent>
+              <Box sx={{ maxWidth: 500 }}>
+                <TextField
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SvgIcon color="action"
+                          fontSize="small">
+                          <SearchIcon />
+                        </SvgIcon>
+                      </InputAdornment>
+                    ),
+                  }}
+                  placeholder="Buscar tarefa"
+                  variant="outlined"
+                />
+              </Box>
+            </CardContent>
+          </Card>
         </Box>
       </Box>
-      <Box sx={{ mt: 3 }}>
-        <Card>
-          <CardContent>
-            <Box sx={{ maxWidth: 500 }}>
-              <TextField
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon color="action"
-                      fontSize="small">
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  ),
-                }}
-                placeholder="Buscar tarefa"
-                variant="outlined"
-              />
-            </Box>
-          </CardContent>
-        </Card>
-      </Box>
-    </Box>
     </>
 
   );
