@@ -14,58 +14,15 @@ import { Upload as UploadIcon } from "../../icons/upload";
 import { Download as DownloadIcon } from "../../icons/download";
 import FormDialog from "../../components/dialog/form-dialog";
 import { useState } from "react";
-import axios from "axios";
-import { Tarefa } from "src/model/tarefa-model";
 import AddIcon from '@mui/icons-material/Add';
 
 export const TarefaListToolbar = (props) => {
   const [open, setOpen] = useState(false);
-  const { refresh, filtrarTarefas } = props;
-  const [state, setState] = React.useState({
-    openSnack: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
-  const URL_API = 'https://minhastarefas-api.herokuapp.com';
-  const { vertical, horizontal, openSnack } = state;
-
-  const handleClickSnack = (newState) => () => {
-    setState({ openSnack: true, ...newState });
-  };
-
-  const handleCloseSnack = () => {
-    setState({ ...state, openSnack: false });
-  };
+  const {filtrarTarefas, onSubmit } = props;
 
   const handleClickOpen = () => {
     let isOpened = !open;
     setOpen(isOpened);
-  };
-
-  const onSubmit = (tarefa, categoria) => {
-    if (tarefa && categoria) {
-      console.log("submit", tarefa, categoria);
-      salvar(new Tarefa(categoria, tarefa));
-    } else {
-
-      console.log("Não pode ser vazio");
-    }
-  };
-
-  const salvar = (tarefa) => {
-    axios
-      .post(`${URL_API}/tarefas`, tarefa)
-      .then((response) => {
-        console.log(response.data);
-        handleClickSnack({
-          vertical: 'top',
-          horizontal: 'right',
-        });
-        refresh();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   return (
@@ -86,10 +43,6 @@ export const TarefaListToolbar = (props) => {
           </Typography>
           <Box sx={{ m: 1 }}>
             <Button startIcon={<UploadIcon fontSize="small" />}
-              onClick={handleClickSnack({
-                vertical: 'top',
-                horizontal: 'right',
-              })}
               sx={{ mr: 1 }}>
               Importar
             </Button>
