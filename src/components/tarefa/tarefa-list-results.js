@@ -18,11 +18,10 @@ import {
 } from "@mui/material";
 
 
-export const ListaTarefasResults = ({ tarefas, ...rest }) => {
+export const ListaTarefasResults = (props) => {
 
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
-  const URL_API = 'https://minhastarefas-api.herokuapp.com';
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -33,8 +32,7 @@ export const ListaTarefasResults = ({ tarefas, ...rest }) => {
   };
 
   return (
-    <Card {...rest}>
-      <PerfectScrollbar>
+    <Card>
         <Box sx={{ minWidth: 1050 }}>
           <Table>
             <TableHead>
@@ -43,11 +41,12 @@ export const ListaTarefasResults = ({ tarefas, ...rest }) => {
                 <TableCell>Descrição</TableCell>
                 <TableCell>Categoria</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {
-                tarefas.map(tarefa => {
+                props.tarefas.map(tarefa => {
                   return(
                     <TableRow key={tarefa.id | ''}>
                     <TableCell>{tarefa.id}</TableCell>
@@ -55,8 +54,7 @@ export const ListaTarefasResults = ({ tarefas, ...rest }) => {
                     <TableCell>{tarefa.categoria}</TableCell>
                     <TableCell>{tarefa.done ? 'Feito' : 'Pendente'}</TableCell>
                     <TableCell>
-                    <IconButton>
-
+                    <IconButton onClick={() => props.alterarStatus(tarefa)}>
                         {tarefa.done ? <DoneAllIcon color="secondary"/>:  <TimerIcon color="secondary"/> }
                        </IconButton >
                     </TableCell>
@@ -67,10 +65,9 @@ export const ListaTarefasResults = ({ tarefas, ...rest }) => {
             </TableBody>
           </Table>
         </Box>
-      </PerfectScrollbar>
       <TablePagination
         component="div"
-        count={tarefas.length}
+        count={props.tarefas.length}
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleLimitChange}
         page={page}

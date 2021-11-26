@@ -12,7 +12,7 @@ const Login = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
+      email: 'marcos@email.com',
       password: 'Password123'
     },
     validationSchema: Yup.object({
@@ -30,6 +30,7 @@ const Login = () => {
           'Password is required')
     }),
     onSubmit: () => {
+      localStorage.setItem('userLogged', formik.values.email);
       router.push('/');
     }
   });
@@ -49,7 +50,7 @@ const Login = () => {
         }}
       >
         <Container maxWidth="sm">
-          <NextLink
+          {/* <NextLink
             href="/"
             passHref
           >
@@ -59,7 +60,7 @@ const Login = () => {
             >
               Dashboard
             </Button>
-          </NextLink>
+          </NextLink> */}
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography

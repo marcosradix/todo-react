@@ -14,7 +14,6 @@ const Tarefas = () => {
   const listarTarefas = () => {
     axios.get(`${URL_API}/tarefas`).then(response => {
       const listaDeTarefas = response.data;
-      console.log(listaDeTarefas);
       setTarefas(listaDeTarefas);
     }).catch(erro =>{
       console.log(erro);
@@ -31,9 +30,7 @@ const Tarefas = () => {
 
   const filtrarTarefas = (event) => {
 
-    const tarefasFiltradas = tarefas.filter(function (str) {
-       return str.descricao.toLowerCase().includes(event.target.value.toLowerCase());
-      });
+    const tarefasFiltradas = tarefas.filter( (str) => str.descricao.toLowerCase().includes(event.target.value.toLowerCase()) );
 
     if(!event.target.value){
       console.log('reset tarefas');
@@ -43,7 +40,14 @@ const Tarefas = () => {
     setTarefas(tarefasFiltradas);
   };
 
-
+  const alterarStatus = (tarefa) =>{
+    console.log('alterando status', tarefa);
+    axios.patch(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
+      listarTarefas();
+    }).catch(erro =>{
+      console.log(erro);
+    });
+  }
   return (
     <>
       <Head>
@@ -62,7 +66,8 @@ const Tarefas = () => {
           <TarefaListToolbar refresh={refresh}
           filtrarTarefas={filtrarTarefas} />
           <Box sx={{ mt: 3 }}>
-            <ListaTarefasResults tarefas={tarefas} />
+            <ListaTarefasResults tarefas={tarefas}
+            alterarStatus={alterarStatus}/>
           </Box>
         </Container>
       </Box>
