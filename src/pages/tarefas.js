@@ -41,13 +41,21 @@ const Tarefas = () => {
   };
 
   const alterarStatus = (tarefa) =>{
-    console.log('alterando status', tarefa);
     axios.patch(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
       listarTarefas();
     }).catch(erro =>{
       console.log(erro);
     });
   }
+
+  const deletarTarefa = (tarefa) =>{
+    axios.delete(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
+      listarTarefas();
+    }).catch(erro =>{
+      console.log(erro);
+    });
+  }
+
   return (
     <>
       <Head>
@@ -67,7 +75,8 @@ const Tarefas = () => {
           filtrarTarefas={filtrarTarefas} />
           <Box sx={{ mt: 3 }}>
             <ListaTarefasResults tarefas={tarefas}
-            alterarStatus={alterarStatus}/>
+            alterarStatus={alterarStatus}
+            deletarTarefa={deletarTarefa}/>
           </Box>
         </Container>
       </Box>

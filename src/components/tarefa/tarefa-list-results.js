@@ -3,6 +3,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import TimerIcon from '@mui/icons-material/Timer';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import {
   Box,
@@ -56,6 +57,11 @@ export const ListaTarefasResults = (props) => {
                     <TableCell>
                     <IconButton onClick={() => props.alterarStatus(tarefa)}>
                         {tarefa.done ? <DoneAllIcon color="secondary"/>:  <TimerIcon color="secondary"/> }
+                       </IconButton >
+                    </TableCell>
+                    <TableCell>
+                    <IconButton onClick={() => props.deletarTarefa(tarefa)}>
+                      <DeleteIcon />
                        </IconButton >
                     </TableCell>
                   </TableRow>
