@@ -1,6 +1,8 @@
 import { useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
+import TimerIcon from '@mui/icons-material/Timer';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 import {
   Box,
@@ -10,7 +12,8 @@ import {
   TableCell,
   TableHead,
   TablePagination,
-  TableRow
+  TableRow,
+  IconButton
 
 } from "@mui/material";
 
@@ -51,6 +54,12 @@ export const ListaTarefasResults = ({ tarefas, ...rest }) => {
                     <TableCell>{tarefa.descricao}</TableCell>
                     <TableCell>{tarefa.categoria}</TableCell>
                     <TableCell>{tarefa.done ? 'Feito' : 'Pendente'}</TableCell>
+                    <TableCell>
+                    <IconButton>
+
+                        {tarefa.done ? <DoneAllIcon color="secondary"/>:  <TimerIcon color="secondary"/> }
+                       </IconButton >
+                    </TableCell>
                   </TableRow>
                   )
                 })

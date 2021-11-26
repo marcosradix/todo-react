@@ -6,9 +6,7 @@ import {
   TextField,
   InputAdornment,
   SvgIcon,
-  Typography,
-  MuiAlert,
-  Snackbar
+  Typography
 } from "@mui/material";
 import * as React from 'react';
 import { Search as SearchIcon } from "../../icons/search";
@@ -18,6 +16,7 @@ import FormDialog from "../../components/dialog/form-dialog";
 import { useState } from "react";
 import axios from "axios";
 import { Tarefa } from "src/model/tarefa-model";
+import AddIcon from '@mui/icons-material/Add';
 
 export const TarefaListToolbar = (props) => {
   const [open, setOpen] = useState(false);
@@ -71,13 +70,6 @@ export const TarefaListToolbar = (props) => {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={openSnack}
-        onClose={handleCloseSnack}
-        message="Tarefa salva com sucesso"
-        key={vertical + horizontal}
-      />
       <Box {...props}>
         <Box
           sx={{
@@ -111,8 +103,9 @@ export const TarefaListToolbar = (props) => {
               onClick={() => handleClickOpen()}
               sx={{ mr: 1 }}
             >
+              <AddIcon />
               Add Tarefa
-            </Button>
+            </Button >
             <FormDialog open={open}
               onSubmit={onSubmit}
               setOpen={handleClickOpen} />
