@@ -5,18 +5,31 @@ const axiosClient = AxiosClient.getInstance();
 const ACTIONS = {
     LISTAR: 'TAREFAS_LISTAR',
     ADD: 'TAREFAS_ADD',
-    REMOVER: 'TAREFAS_REMOVER'
+    REMOVER: 'TAREFAS_REMOVER',
+    ATUALIZAR: 'TAREFAS_ATUALIZAR'
 }
 
 const ESTADO_INICIAL = {
     tarefas: []
 };
 
+const removeFromArray = (tarefas, tarefa) => {
+    const index = tarefas.indexOf(tarefa);
+    if (index > -1) {
+        tarefas.splice(index, 1);
+    }
+    return tarefas;
+}
+
 export const tarefaReducer = (state = ESTADO_INICIAL, action) => {
     console.log('Chamando ação do redux: ', action.type)
     switch (action.type) {
         case ACTIONS.LISTAR:
-            return { ...state, tarefas: action.tarefas };
+            return {...state, tarefas: action.tarefas };
+        case ACTIONS.ADD:
+            return {...state, tarefas: [...state.tarefas, action.tarefa] };
+        case ACTIONS.REMOVER:
+                return {...state, tarefas: [...removeFromArray(state.tarefas, action.tarefa)] };      
         default:
             return state ;
     }
@@ -31,6 +44,26 @@ export function listarTarefas(){
             })
         });
     }
+}
 
+export function salvarTarefa(tarefa){
+    return dispatch => {
+        axiosClient.post('/tarefas', tarefa).then(response =>{
+            dispatch({
+                type: ACTIONS.ADD,
+                tarefa: response.data
+            })
+        });
+    }
+}
 
+export function apagarTarefa(tarefa){
+    return dispatch => {
+        axiosClient.delete(`/tarefas/${tarefa.id}`).then(() =>{
+            dispatch({
+                type: ACTIONS.REMOVER,
+                tarefa: tarefa
+            })
+        });
+    }
 }
