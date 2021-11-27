@@ -1,19 +1,33 @@
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { AppBar, Avatar, Badge, Box, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { AppBar, Badge, Box, IconButton, Toolbar, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import { Bell as BellIcon } from '../icons/bell';
-import { UserCircle as UserCircleIcon } from '../icons/user-circle';
-import { Users as UsersIcon } from '../icons/users';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   boxShadow: theme.shadows[3]
 }));
 
+
 export const DashboardNavbar = (props) => {
+  const router = useRouter();
+  const [loggedUser, setLoggedUser] = useState('Sair');
+
+  const logout = () => {
+    localStorage.removeItem('userLogged');
+    router.push('/login');
+  }
+
   const { onSidebarOpen, ...other } = props;
+
+  useEffect(() => {
+    setLoggedUser(`${localStorage.getItem('userLogged')} | Sair`);
+
+  }, [] );
 
   return (
     <>
@@ -46,18 +60,8 @@ export const DashboardNavbar = (props) => {
           >
             <MenuIcon fontSize="small" />
           </IconButton>
-          <Tooltip title="Search">
-            <IconButton sx={{ ml: 1 }}>
-              <SearchIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
-          <Tooltip title="Contacts">
-            <IconButton sx={{ ml: 1 }}>
-              <UsersIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Notifications">
+          <Tooltip title="Notificações">
             <IconButton sx={{ ml: 1 }}>
               <Badge
                 badgeContent={4}
@@ -68,16 +72,12 @@ export const DashboardNavbar = (props) => {
               </Badge>
             </IconButton>
           </Tooltip>
-          <Avatar
-            sx={{
-              height: 40,
-              width: 40,
-              ml: 1
-            }}
-            src="/static/images/avatars/avatar_1.png"
-          >
-            <UserCircleIcon fontSize="small" />
-          </Avatar>
+          <Tooltip title={loggedUser}>
+            <IconButton sx={{ ml: 1 }} onClick={logout}>
+              <ExitToAppIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          
         </Toolbar>
       </DashboardNavbarRoot>
     </>

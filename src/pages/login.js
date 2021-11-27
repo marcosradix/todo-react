@@ -4,9 +4,6 @@ import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Facebook as FacebookIcon } from '../icons/facebook';
-import { Google as GoogleIcon } from '../icons/google';
 
 const Login = () => {
   const router = useRouter();
@@ -19,15 +16,15 @@ const Login = () => {
       email: Yup
         .string()
         .email(
-          'Must be a valid email')
+          'Deve ser um email válido')
         .max(255)
         .required(
-          'Email is required'),
+          'Email é obrigatório'),
       password: Yup
         .string()
         .max(255)
         .required(
-          'Password is required')
+          'Senha é obrigatória')
     }),
     onSubmit: () => {
       localStorage.setItem('userLogged', formik.values.email);
