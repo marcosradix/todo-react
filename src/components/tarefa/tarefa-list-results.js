@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
 import TimerIcon from '@mui/icons-material/Timer';
 import DoneAllIcon from '@mui/icons-material/DoneAll';

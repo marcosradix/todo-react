@@ -7,26 +7,22 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createEmotionCache } from '../utils/create-emotion-cache';
 import { theme } from '../theme';
 import axios from 'axios';
+import { Provider } from 'react-redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
+import mainReducer from '../store';
 
+const store = applyMiddleware(thunk)(createStore)(mainReducer);
 const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  axios.interceptors.request.use((config) => {
-    if(!config.url.endsWith('login')){
-      //console.log(config.url);
-      config.headers['x-tenant-id'] = localStorage.getItem('userLogged');
-    }
-    config.headers['Accept'] =  "*/*";
-    return config;
-}, (error) => {
-    return new Promise.reject(error);
-});
+
 
   return (
+    <Provider store={store}>
     <CacheProvider value={emotionCache}>
       <Head>
         <title>
@@ -44,6 +40,7 @@ const App = (props) => {
         </ThemeProvider>
       </LocalizationProvider>
     </CacheProvider>
+    </Provider>
   );
 };
 

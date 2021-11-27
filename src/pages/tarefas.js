@@ -1,34 +1,32 @@
 import Head from 'next/head';
 import { Box, Container, Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material';
-import { ListaTarefasResults } from '../components/tarefa/tarefa-list-results';
+import  { ListaTarefasResults }  from '../components/tarefa/tarefa-list-results';
 import { TarefaListToolbar } from '../components/tarefa/tarefa-list-toolbar';
 import { DashboardLayout } from '../components/dashboard-layout';
 import React, { useState, useEffect } from 'react';
-import axios from "axios";
 import { Tarefa } from "src/model/tarefa-model";
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {listarTarefas} from '../store/tarefas-reducer';
+import {AxiosClient} from '../utils/custom-axios-client';
 
-const Tarefas = () => {
+
+const axiosClient = AxiosClient.getInstance();
+const Tarefas = (props) => {
 
   const URL_API = 'https://minhastarefas-api.herokuapp.com';
   const [tarefas, setTarefas]  = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [mensagem, setMensagem] = useState('');
 
-  const listarTarefas = () => {
-    axios.get(`${URL_API}/tarefas`).then(response => {
-      const listaDeTarefas = response.data;
-      setTarefas(listaDeTarefas);
-    }).catch(erro =>{
-      console.log(erro);
-    });
-  }
+
   useEffect(() => {
-    listarTarefas();
+    props.listarTarefas();
   }, [] );
 
   const refresh = () => {
     console.log('Atualizando a lista..');
-    listarTarefas();
+    props.listarTarefas();
   };
 
   const filtrarTarefas = (event) => {
@@ -37,15 +35,15 @@ const Tarefas = () => {
 
     if(!event.target.value){
       console.log('reset tarefas');
-      listarTarefas();
+      props.listarTarefas();
     }
 
     setTarefas(tarefasFiltradas);
   };
 
   const alterarStatus = (tarefa) =>{
-    axios.patch(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
-      listarTarefas();
+    axiosClient.patch(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
+      props.listarTarefas();
       setMensagem('Tarefa atualizada com sucesso.')
       setOpenDialog(true);
     }).catch(erro =>{
@@ -56,8 +54,8 @@ const Tarefas = () => {
   }
 
   const deletarTarefa = (tarefa) =>{
-    axios.delete(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
-      listarTarefas();
+    axiosClient.delete(`${URL_API}/tarefas/${tarefa.id}`).then(() => {
+      props.listarTarefas();
       setMensagem('Tarefa removida com sucesso.')
       setOpenDialog(true);
     }).catch(erro =>{
@@ -77,7 +75,7 @@ const Tarefas = () => {
   }
 
   const salvar = (tarefa) => {
-    axios
+    axiosClient
       .post(`${URL_API}/tarefas`, tarefa)
       .then((response) => {
         setMensagem('Tarefa salva com sucesso.')
@@ -111,7 +109,7 @@ const Tarefas = () => {
           onSubmit={onSubmit}
           />
           <Box sx={{ mt: 3 }}>
-            <ListaTarefasResults tarefas={tarefas}
+            <ListaTarefasResults tarefas={props.tarefas}
             alterarStatus={alterarStatus}
             deletarTarefa={deletarTarefa}/>
           </Box>
@@ -146,4 +144,12 @@ Tarefas.getLayout = (page) => (
   </DashboardLayout>
 );
 
-export default Tarefas;
+
+const mapStateToProps = state => ({
+  tarefas: state.tarefas.tarefas
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {listarTarefas}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Tarefas);
