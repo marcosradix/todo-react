@@ -22,16 +22,17 @@ const removeFromArray = (tarefas, tarefa) => {
 }
 
 export const tarefaReducer = (state = ESTADO_INICIAL, action) => {
-    console.log('Chamando ação do redux: ', action.type)
     switch (action.type) {
         case ACTIONS.LISTAR:
             return {...state, tarefas: action.tarefas };
         case ACTIONS.ADD:
             return {...state, tarefas: [...state.tarefas, action.tarefa] };
+        case ACTIONS.ATUALIZAR:
+            return {...state, tarefas: [...state.tarefas] };
         case ACTIONS.REMOVER:
                 return {...state, tarefas: [...removeFromArray(state.tarefas, action.tarefa)] };      
         default:
-            return state ;
+            return state;
     }
 }
 
@@ -63,6 +64,17 @@ export function apagarTarefa(tarefa){
             dispatch({
                 type: ACTIONS.REMOVER,
                 tarefa: tarefa
+            })
+        });
+    }
+}
+
+export function atualizarStatusTarefa(id){
+    return dispatch => {
+        axiosClient.patch(`/tarefas/${id}`).then(() =>{
+            dispatch({
+                type: ACTIONS.ATUALIZAR,
+                tarefa: id
             })
         });
     }
