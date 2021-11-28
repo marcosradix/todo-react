@@ -6,6 +6,9 @@ import { Bell as BellIcon } from '../icons/bell';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {zerarNotificacoes} from '.././store/tarefas-reducer';
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -13,13 +16,14 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 }));
 
 
-export const DashboardNavbar = (props) => {
+  const DashboardNavbar = (props) => {
   const router = useRouter();
   const [loggedUser, setLoggedUser] = useState('Sair');
 
   const logout = () => {
     localStorage.removeItem('userLogged');
     router.push('/login');
+     props.zerarNotificacoes();
   }
 
   const { onSidebarOpen, ...other } = props;
@@ -64,9 +68,8 @@ export const DashboardNavbar = (props) => {
           <Tooltip title="Notificações">
             <IconButton sx={{ ml: 1 }}>
               <Badge
-                badgeContent={4}
+                badgeContent={props.notificcacoes}
                 color="primary"
-                variant="dot"
               >
                 <BellIcon fontSize="small" />
               </Badge>
@@ -87,3 +90,12 @@ export const DashboardNavbar = (props) => {
 DashboardNavbar.propTypes = {
   onSidebarOpen: PropTypes.func
 };
+
+const mapStateToProps = state => ({
+  notificcacoes: state.tarefas.quantidade
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {zerarNotificacoes}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardNavbar);
