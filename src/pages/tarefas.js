@@ -3,13 +3,13 @@ import { Box, Container, Dialog, DialogActions, DialogContent, DialogTitle, Butt
 import { ListaTarefasResults } from '../components/tarefa/tarefa-list-results';
 import { TarefaListToolbar } from '../components/tarefa/tarefa-list-toolbar';
 import { DashboardLayout } from '../components/dashboard-layout';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Tarefa } from "src/model/tarefa-model";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { listarTarefas, salvarTarefa, apagarTarefa, atualizarStatusTarefa } from '../store/tarefas-reducer';
-import { mensagemSucesso, esconderMensagem } from '../store/mensagens-reducer';
+import { listarTarefas, salvarTarefa, apagarTarefa, atualizarStatusTarefa, filtrarTarefas } from '../store/tarefas-reducer';
 import { styled } from '@mui/material/styles';
+import { mensagemSucesso } from '../store/mensagens-reducer';
 
 const Tarefas = (props) => {
 
@@ -17,34 +17,18 @@ const Tarefas = (props) => {
     props.listarTarefas();
   }, []);
 
-  const filtrarTarefas = (event) => {
-
-    const tarefasFiltradas = props.tarefas.filter((str) => str.descricao.toLowerCase().includes(event.target.value.toLowerCase()));
-
-    if (!event.target.value) {
-      console.log('reset tarefas');
-      props.listarTarefas();
-    }
-
-    //setTarefas(tarefasFiltradas);
-  }
-
   const alterarStatus = (tarefa) => {
     props.atualizarStatusTarefa(tarefa.id);
-    props.mensagemSucesso('Tarefa atualizada com sucesso.', true);
   }
 
   const deletarTarefa = (tarefa) => {
       props.apagarTarefa(tarefa);
-      props.mensagemSucesso('Tarefa removida com sucesso.', true);
- 
   }
 
   const onSubmit = (tarefa, categoria) => {
     if (tarefa && categoria) {
       console.log("submit", tarefa, categoria);
       props.salvarTarefa(new Tarefa(categoria, tarefa));
-      props.mensagemSucesso('Tarefa salva com sucesso.', true);
     } else {
       console.log("Não pode ser vazio");
     }
@@ -72,7 +56,7 @@ const Tarefas = (props) => {
       >
         <Container maxWidth={false}>
           <TarefaListToolbar
-            filtrarTarefas={filtrarTarefas}
+            filtrarTarefas={props.filtrarTarefas}
             onSubmit={onSubmit}
           />
           <Box sx={{ mt: 3 }}>
@@ -113,6 +97,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(
-  { listarTarefas, salvarTarefa, apagarTarefa, atualizarStatusTarefa, mensagemSucesso, esconderMensagem }, dispatch);
+  { listarTarefas, salvarTarefa, apagarTarefa, atualizarStatusTarefa, mensagemSucesso, filtrarTarefas }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tarefas);

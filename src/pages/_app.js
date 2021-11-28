@@ -10,8 +10,9 @@ import { Provider } from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import mainReducer from '../store';
+import multi from 'redux-multi';
 
-const store = applyMiddleware(thunk)(createStore)(mainReducer);
+const store = applyMiddleware(thunk, multi)(createStore)(mainReducer);
 const clientSideEmotionCache = createEmotionCache();
 
 const App = (props) => {
